@@ -1,0 +1,20 @@
+from .base import *
+
+SECRET_KEY = 'django-insecure-f&b+4n6o@v*(_i1=(mw*^%d-!*dhp8j&@#b26fz_v$hbz39ho_'
+
+DEBUG = True
+
+ALLOWED_HOSTS = []
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+# Database
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
