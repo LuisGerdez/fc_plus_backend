@@ -34,23 +34,23 @@ Migraciones de base de datos
 
 Ejecuta las migraciones para preparar la base de datos:
 
-python manage.py makemigrations --settings=football_management.settings.development
+python manage.py makemigrations --settings=fc_plus.settings.development
 <br />
-python manage.py migrate --settings=football_management.settings.development
+python manage.py migrate --settings=fc_plus.settings.development
 
 Crear superusuario (opcional)
 -----------------------------
 
 Para acceder al panel de administración de Django:
 
-python manage.py createsuperuser --settings=football_management.settings.development
+python manage.py createsuperuser --settings=fc_plus.settings.development
 
 Ejecutar el servidor
 --------------------
 
 Inicia el servidor de desarrollo:
 
-python manage.py runserver --settings=football_management.settings.development
+python manage.py runserver --settings=fc_plus.settings.development
 
 Por defecto estará disponible en:
 
