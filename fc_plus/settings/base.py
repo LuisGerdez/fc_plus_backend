@@ -21,6 +21,7 @@ THIRD_APPS = [
     'djoser',
     'rest_framework_simplejwt',
     'corsheaders',
+    'social_django'
 ]
 
 INSTALLED_APPS = BASE_APPS + LOCAL_APPS + THIRD_APPS
@@ -48,9 +49,24 @@ REST_FRAMEWORK = {
     )
 }
 
+DJOSER = {
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
+        'http://localhost:3000/auth/complete/google/',
+    ],
+}
+
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
 }
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '58380115097-i539jmejqghecfpl0iacci13fgmhl2lb.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'openid',
+]
+SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ['first_name', 'last_name']
 
 ROOT_URLCONF = 'fc_plus.urls'
 
@@ -107,6 +123,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.google.GoogleOAuth2',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
