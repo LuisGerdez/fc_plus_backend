@@ -14,7 +14,9 @@ BASE_APPS = [
     'django.contrib.staticfiles',
 ]
 
-LOCAL_APPS = []
+LOCAL_APPS = [
+    'core',
+]
 
 THIRD_APPS = [
     'rest_framework',
@@ -43,6 +45,8 @@ THIRD_MIDDLEWARE = []
 
 MIDDLEWARE = BASE_MIDDLEWARE + LOCAL_MIDDLEWARE + THIRD_MIDDLEWARE
 
+AUTH_USER_MODEL = 'core.User'
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -55,6 +59,9 @@ DJOSER = {
         'http://localhost:3000/auth/complete/google/',
         'http://127.0.0.1:3000/auth/complete/google/',
     ],
+    "SERIALIZERS": {
+        "user_create": "core.serializers.UserCreateSerializer",
+    }
 }
 
 SIMPLE_JWT = {
