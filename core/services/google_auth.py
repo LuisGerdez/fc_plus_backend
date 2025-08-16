@@ -1,7 +1,9 @@
 import jwt, urllib, requests
-from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from social_django.models import UserSocialAuth
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class GoogleAuthService:
     CLIENT_ID = '58380115097-i539jmejqghecfpl0iacci13fgmhl2lb.apps.googleusercontent.com'
@@ -27,15 +29,29 @@ class GoogleAuthService:
 
         id_token = response.json()["id_token"]
         decoded = jwt.decode(id_token, options={"verify_signature": False})
-        email = decoded["email"]
 
-        user = cls.get_or_create_user(email)
+        email = decoded.get("email", "")
+        first_name = decoded.get("given_name", "")
+        last_name = decoded.get("family_name", "")
+
+        if not "email":
+            raise Exception("Email not found in ID token")
+
+        user = cls.get_or_create_user(email, first_name, last_name)
         tokens = cls.get_jwt_tokens(user)
         return {"access": tokens["access"], "refresh": tokens["refresh"]}
 
     @staticmethod
-    def get_or_create_user(email):
-        user, created = User.objects.get_or_create(email=email, defaults={"username": email})
+    def get_or_create_user(email, first_name="", last_name=""):
+        user, created = User.objects.get_or_create(
+            email=email,
+            defaults={
+                "username": email,
+                "first_name": first_name,
+                "last_name": last_name,
+            }
+        )
+
         if created:
             UserSocialAuth.create_social_auth(user=user, provider="google-oauth2-custom", uid=email)
         return user
