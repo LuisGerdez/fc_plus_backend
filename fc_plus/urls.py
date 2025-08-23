@@ -5,7 +5,8 @@ from core.views import GoogleLoginView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("core.urls")),
+    
+    path("api/", include("core.urls")),
     
     path('o/<str:provider>/', ProviderAuthView.as_view(), name='provider-auth'),
     path("auth/google_login/", GoogleLoginView.as_view(), name="google-oauth-login"),

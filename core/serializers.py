@@ -20,3 +20,13 @@ class UserCreateSerializer(BaseUserCreateSerializer):
             "preferred_position",
             "promo_code",
         )
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id", "username", "email", "first_name", "last_name",
+            "birthdate", "game_level", "gender", "languages",
+            "nationality", "preferred_position", "promo_code"
+        ]
