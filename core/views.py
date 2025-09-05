@@ -36,8 +36,12 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    @action(detail=False, methods=["put", "patch"])
+    @action(detail=False, methods=["put", "patch", "get"])
     def me_update(self, request):
+        if request.method == "GET":
+            serializer = self.get_serializer(request.user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
         partial = request.method == "PATCH"
 
         serializer = self.get_serializer(request.user, data=request.data, partial=partial)
