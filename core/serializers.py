@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = [
             "id", "username", "email", "first_name", "last_name",
             "birthdate", "game_level", "gender", "languages",
-            "nationality", "preferred_position", "promo_code"
+            "nationality", "preferred_position", "promo_code", "public_profile"
         ]
 
 

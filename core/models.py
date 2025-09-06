@@ -27,6 +27,7 @@ class User(AbstractUser):
     nationality = models.CharField(max_length=100, null=True, blank=True)
     preferred_position = models.CharField(max_length=20, choices=Position.choices, null=True, blank=True)
     promo_code = models.CharField(max_length=50, null=True, blank=True)
+    public_profile = models.BooleanField(default=True)
 
 
 class SoccerField(models.Model):
