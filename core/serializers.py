@@ -2,6 +2,8 @@ from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
+from .models import SoccerField
+
 User = get_user_model()
 
 class UserCreateSerializer(BaseUserCreateSerializer):
@@ -30,3 +32,18 @@ class UserSerializer(serializers.ModelSerializer):
             "birthdate", "game_level", "gender", "languages",
             "nationality", "preferred_position", "promo_code"
         ]
+
+
+class SoccerFieldSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SoccerField
+        fields = [
+            "id",
+            "name",
+            "image_url",
+            "address",
+            "google_maps_link",
+            "capacity",
+            "is_enabled",
+        ]
+        read_only_fields = ["id", "created_at"]

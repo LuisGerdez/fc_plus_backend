@@ -7,7 +7,8 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.decorators import action
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer, SoccerFieldSerializer
+from .models import SoccerField
 from .services.google_auth import GoogleAuthService
 
 User = get_user_model()
@@ -51,9 +52,31 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def get_permissions(self):
+        """
+        Return permissions based on action:
+        - 'me_update': Authenticated users
+        - All other actions: Admin users
+        """
         if self.action == "me_update":
             permission_classes = [IsAuthenticated]
         else:
             permission_classes = [IsAdminUser]
 
+        return [permission() for permission in permission_classes]
+
+
+class SoccerFieldViewSet(viewsets.ModelViewSet):
+    queryset = SoccerField.objects.all()
+    serializer_class = SoccerFieldSerializer
+
+    def get_permissions(self):
+        """
+        Return permissions based on method:
+        GET/HEAD/OPTIONS = Authenticated users
+        POST/PUT/PATCH/DELETE = Admin users
+        """
+        if self.request.method in ("GET", "HEAD", "OPTIONS"):
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
