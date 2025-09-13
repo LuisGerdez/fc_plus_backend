@@ -7,8 +7,8 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.decorators import action
 
-from .serializers import UserSerializer, SoccerFieldSerializer
-from .models import SoccerField
+from .serializers import UserSerializer, SoccerFieldSerializer, MatchSerializer, MatchDetailSerializer
+from .models import SoccerField, Match
 from .services.google_auth import GoogleAuthService
 
 User = get_user_model()
@@ -80,3 +80,18 @@ class SoccerFieldViewSet(viewsets.ModelViewSet):
         else:
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
+
+
+class MatchViewSet(viewsets.ModelViewSet):
+    queryset = Match.objects.all()
+    serializer_class = MatchSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(host=self.request.user)
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return MatchSerializer
+
+        return MatchDetailSerializer

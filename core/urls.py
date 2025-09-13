@@ -12,4 +12,7 @@ urlpatterns = [
 
     path("soccer-fields/", views.SoccerFieldViewSet.as_view({"get": "list", "post": "create"}), name="soccerfields_list"),
     path("soccer-fields/<int:pk>/", views.SoccerFieldViewSet.as_view({ "get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="soccerfields_detail"),
+
+    path("matches/", views.MatchViewSet.as_view({"get": "list"}), name="matches_list"),
+    path("matches/<int:pk>/", views.MatchViewSet.as_view({"get": "retrieve", "post": "create", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="matches_detail"),
 ]

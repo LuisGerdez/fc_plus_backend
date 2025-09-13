@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 
 
@@ -40,3 +41,41 @@ class SoccerField(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Match(models.Model):
+    class MatchType(models.TextChoices):
+        FIVE_VS_FIVE = "5v5", "5 vs 5"
+        SEVEN_VS_SEVEN = "7v7", "7 vs 7"
+        EIGHT_VS_EIGHT = "8v8", "8 vs 8"
+
+    class Status(models.TextChoices):
+        AVAILABLE = "available", "Available"
+        IN_PROGRESS = "in_progress", "In progress"
+        FINISHED = "finished", "Finished"
+
+    datetime = models.DateTimeField(verbose_name="Match date & time")
+    field = models.ForeignKey("SoccerField", on_delete=models.CASCADE, related_name="matches")
+    match_type = models.CharField(max_length=10, choices=MatchType.choices, default=MatchType.FIVE_VS_FIVE)
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    host = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="hosted_matches")
+    players = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="joined_matches", blank=True)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.AVAILABLE)
+
+    class Meta:
+        ordering = ["-datetime"]
+        verbose_name = "Match"
+        verbose_name_plural = "Matches"
+
+    def get_max_players(self):
+        if self.match_type == self.MatchType.FIVE_VS_FIVE:
+            return 10
+        elif self.match_type == self.MatchType.SEVEN_VS_SEVEN:
+            return 14
+        elif self.match_type == self.MatchType.EIGHT_VS_EIGHT:
+            return 16
+            
+        return 0
+
+    def __str__(self):
+        return f"{self.MatchType(self.match_type).label} - {self.field.name} @ {self.datetime:%Y-%m-%d %H:%M}"
