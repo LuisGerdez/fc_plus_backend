@@ -22,7 +22,7 @@ class UserCreateSerializer(BaseUserCreateSerializer):
             "preferred_position",
             "promo_code",
             "public_profile",
-            "is_admin",
+            "is_superuser",
         )
 
 
@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            "id", "username", "email", "first_name", "last_name",
+            "id", "username", "email", "first_name", "last_name", "is_superuser",
             "birthdate", "game_level", "gender", "languages",
             "nationality", "preferred_position", "promo_code", "public_profile"
         ]
