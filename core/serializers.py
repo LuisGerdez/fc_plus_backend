@@ -21,6 +21,8 @@ class UserCreateSerializer(BaseUserCreateSerializer):
             "nationality",
             "preferred_position",
             "promo_code",
+            "public_profile",
+            "is_admin",
         )
 
 
